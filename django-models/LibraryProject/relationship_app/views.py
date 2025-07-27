@@ -8,8 +8,9 @@ from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .helpers import is_admin, is_librarian, is_member
-from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
-from .forms import BookForm
+from django.contrib.auth.decorators import user_passes_test, login_required
+from django.contrib.auth.decorators import permission_required
+
 
 
 # Create your views here.
