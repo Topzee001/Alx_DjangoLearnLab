@@ -6,6 +6,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from .helpers import is_admin, is_librarian, is_member
+from django.contrib.auth.decorators import user_passes_test, login_required
 
 
 # Create your views here.
@@ -46,3 +48,18 @@ def register_view(request):
     else:
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
+
+@user_passes_test(is_admin)
+@login_required
+def admin_view(request):
+    return render(request, 'admin_view.html')
+
+@user_passes_test(is_librarian)
+@login_required
+def librarian_view(request):
+    return render(request, 'librarian_view.html')
+
+@user_passes_test(is_member)
+@login_required
+def member_view(request):
+    return render(request, 'member_view.html')
