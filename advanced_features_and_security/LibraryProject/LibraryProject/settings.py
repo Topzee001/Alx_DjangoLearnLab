@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf.apps.BookshelfConfig',
     'relationship_app.apps.RelationshipAppConfig'
-    'advanced_features_and_security.apps.AdvancedFeaturesAndSecurityConfig'
+
 ]
 
 MIDDLEWARE = [

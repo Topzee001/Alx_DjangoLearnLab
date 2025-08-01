@@ -1,5 +1,5 @@
+from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
 
 
 
@@ -21,6 +21,7 @@ class Book(models.Model):
             ("can_add_book", "Can add book"),
             ("can_change_book", "Can change book"),
             ("can_delete_book", "Can delete book"),
+            ("can_publish_book", "Can publish book"),
                             ]
 
     def __str__(self):
@@ -50,7 +51,7 @@ class UserProfile(models.Model):
         ('Member', 'Member'),
     )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     role= models.CharField(max_length=20, choices=ROLES_CHOICES, default='Member')
 
     def __str__(self):

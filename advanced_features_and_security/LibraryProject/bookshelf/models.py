@@ -46,10 +46,7 @@ class CustomUser(AbstractUser):
 
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['date_of_birth']
-
-
-
+    REQUIRED_FIELDS = ['email', 'date_of_birth']
 
     def __str__(self):
         return self.username
