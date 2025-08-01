@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import permission_required
 from .models import Book
 from django.http import HttpResponse
-from .forms import BookSearchForm
+from .forms import ExampleForm
 
 
 # Create your views here.
@@ -48,7 +48,7 @@ def delete_book(request, pk):
     return redirect('book_list')
 
 def search_books(request):
-    form = BookSearchForm(request.GET)
+    form = ExampleForm(request.GET)
     if form.is_valid():
         query = form.cleaned_data['q']
         books = Book.objects.filter(title__icontains=query)
