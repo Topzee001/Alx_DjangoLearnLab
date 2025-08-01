@@ -23,6 +23,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('books/', include('bookshelf.urls')),
     path('auth/', include('relationship_app.urls')),
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
 ]
