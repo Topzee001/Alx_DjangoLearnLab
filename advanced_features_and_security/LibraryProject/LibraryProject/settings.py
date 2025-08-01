@@ -27,11 +27,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8a#ri3mx_c3(lr33cpu90%$&!kir=wy_7okq!tz&bj+dux+ue$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# Prevents displaying detailed error pages in production
 DEBUG = False
 
 ALLOWED_HOSTS = ['yourdomain.com', '127.0.0.1', 'localhost']
 
 # Browser-side protections
+# Protects against XSS by enabling browser filters
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
@@ -54,7 +56,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bookshelf.apps.BookshelfConfig',
-    'relationship_app.apps.RelationshipAppConfig'
+    'relationship_app.apps.RelationshipAppConfig',
+    'csp',
 
 ]
 
@@ -66,7 +69,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
+
+# configure CSP headers to reduce the risk of xss
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'https://cdnjs.cloudflare.com')  # if using CDN
+CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com')
+CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
+
 
 ROOT_URLCONF = 'LibraryProject.urls'
 
