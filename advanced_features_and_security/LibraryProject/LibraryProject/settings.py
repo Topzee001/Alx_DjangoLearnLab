@@ -15,6 +15,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
 import os
+from csp.constants import SELF
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -73,11 +74,24 @@ MIDDLEWARE = [
 ]
 
 # configure CSP headers to reduce the risk of xss
-CSP_DEFAULT_SRC = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'", 'https://cdnjs.cloudflare.com')  # if using CDN
-CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com')
-CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
+CONTENT_SECURITY_POLICY = {
+    'DIRECTIVES': {
+        'default-src': ("'self'",),
+        'font-src': ("'self'", 'https://fonts.gstatic.com'),
+        'script-src': ("'self'", 'https://cdnjs.cloudflare.com'),
+        'style-src': ("'self'", 'https://fonts.googleapis.com'),
+    }
+}
 
+# or the below
+# CONTENT_SECURITY_POLICY = {
+#     "EXCLUDE_URL_PREFIXES": ["/admin"],
+#     "DIRECTIVES": {
+#         "default-src": [SELF, "*.example.com"],
+#         "script-src": [SELF, "js.cdn.com/example/"],
+#         "img-src": [SELF, "data:", "example.com"],
+#     },
+# }
 
 ROOT_URLCONF = 'LibraryProject.urls'
 

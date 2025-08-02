@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import permission_required
 from .models import Book
 from django.http import HttpResponse
-from .forms import ExampleForm
+from .forms import ExampleForm, BookForm
 
 
 # Create your views here.
@@ -54,6 +54,17 @@ def search_books(request):
         books = Book.objects.filter(title__icontains=query)
     return render(request, 'bookshelf/book_list.html', {'form': form, 'books': books})
 
+@permission_required('bookshelf.can_create', raise_exception=True)
+def add_book(request):
+    if request.method ==  'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('book_list')
+    else:
+        form = BookForm()
+    
+    return render(request, 'bookshelf/form_example.html', {'form': form})
 
 
 
