@@ -56,7 +56,7 @@ def search_books(request):
 
 @permission_required('bookshelf.can_create', raise_exception=True)
 def add_book(request):
-    if request.method ==  'POST':
+    if request.method =='POST':
         form = BookForm(request.POST)
         if form.is_valid():
             form.save()

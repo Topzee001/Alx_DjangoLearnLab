@@ -76,3 +76,40 @@ python manage.py makemigrations
 python manage.py migrate
 Start Development Server
 python manage.py runserver
+
+# w11 Task 3
+
+# Django Security: Enforcing HTTPS and Secure Headers
+
+## Overview
+
+This project implements essential security configurations to ensure all communication between the client and the Django application is encrypted and secure. It follows best practices including HTTPS enforcement, secure cookies, and secure HTTP headers.
+
+---
+
+## Configurations Implemented
+
+### ✅ 1. Force HTTPS Redirects
+## all commands here in the settings.py file
+```python
+SECURE_SSL_REDIRECT = True
+All HTTP requests are automatically redirected to HTTPS.
+✅ 2. HSTS (HTTP Strict Transport Security)
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+Informs browsers to only access the site over HTTPS for one year, including subdomains.
+✅ 3. Secure Cookies
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+Cookies are only transmitted over HTTPS.
+✅ 4. Secure Headers
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+Prevents clickjacking, MIME sniffing, and enables XSS filtering in modern browsers.
+Deployment Notes
+Ensure your production server (e.g., Nginx or Apache) is configured to support HTTPS:
+Install an SSL certificate using Let's Encrypt.
+Redirect all HTTP traffic to HTTPS.
+Forward traffic securely to the Django app via Gunicorn or WSGI.

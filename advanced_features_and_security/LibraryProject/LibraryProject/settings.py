@@ -93,6 +93,23 @@ CONTENT_SECURITY_POLICY = {
 #     },
 # }
 
+
+# redirect http requests to https
+SECURE_SSL_REDIRECT = True
+
+# HTTPS Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000 # 1 YEAR
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Cookies should only be sent over HTTPS
+# I'VE ADDED IT B4, AT THE TOP I THINK
+
+# Prevent your site from being embedded in iframes, attacks like clickjacking and XSS
+
+
+
+
 ROOT_URLCONF = 'LibraryProject.urls'
 
 TEMPLATES = [
