@@ -106,6 +106,13 @@ SECURE_HSTS_PRELOAD = True
 # I'VE ADDED IT B4, AT THE TOP I THINK
 
 # Prevent your site from being embedded in iframes, attacks like clickjacking and XSS
+# done already
+
+# Update Deployment Configuration
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+HTTP_X_FORWARDED_PROTO = 'https'
+# SECURE_SSL_REDIRECT = True
+
 
 
 
