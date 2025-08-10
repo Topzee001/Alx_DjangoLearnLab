@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group, Permission
 from django.apps import apps
-# this code is for creating groups and assigning permissions to user using code
+# this code is for creating groups and assigning permissions to users using code
 class Command(BaseCommand):
     help = "Create default groups and assign permissions"
 

@@ -33,19 +33,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['yourdomain.com', '127.0.0.1', 'localhost']
 
-# Browser-side protections
-# Protects against XSS by enabling browser filters
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
-
-# ensure Cookies are sent over HTTPS only(when deployed with HTTPS)
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-
-# prevent the site from being embedded in iframes
-X_FRAME_OPTIONS = 'DENY'
-
 
 # Application definition
 
@@ -73,15 +60,7 @@ MIDDLEWARE = [
     'csp.middleware.CSPMiddleware',
 ]
 
-# configure CSP headers to reduce the risk of xss
-CONTENT_SECURITY_POLICY = {
-    'DIRECTIVES': {
-        'default-src': ("'self'",),
-        'font-src': ("'self'", 'https://fonts.gstatic.com'),
-        'script-src': ("'self'", 'https://cdnjs.cloudflare.com'),
-        'style-src': ("'self'", 'https://fonts.googleapis.com'),
-    }
-}
+
 
 # or the below
 # CONTENT_SECURITY_POLICY = {
@@ -93,6 +72,16 @@ CONTENT_SECURITY_POLICY = {
 #     },
 # }
 
+# configure CSP headers to reduce the risk of xss
+CONTENT_SECURITY_POLICY = {
+    'DIRECTIVES': {
+        'default-src': ("'self'",),
+        'font-src': ("'self'", 'https://fonts.gstatic.com'),
+        'script-src': ("'self'", 'https://cdnjs.cloudflare.com'),
+        'style-src': ("'self'", 'https://fonts.googleapis.com'),
+    }
+}
+
 
 # redirect http requests to https
 SECURE_SSL_REDIRECT = True
@@ -102,19 +91,23 @@ SECURE_HSTS_SECONDS = 31536000 # 1 YEAR
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
-# Cookies should only be sent over HTTPS
-# I'VE ADDED IT B4, AT THE TOP I THINK
+# Browser-side protections
+# Protects against XSS by enabling browser filters
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
 
-# Prevent your site from being embedded in iframes, attacks like clickjacking and XSS
-# done already
+# ensure Cookies are sent over HTTPS only(when deployed with HTTPS)
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# prevent the site from being embedded in iframes
+X_FRAME_OPTIONS = 'DENY'
 
 # Update Deployment Configuration
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 HTTP_X_FORWARDED_PROTO = 'https'
 # SECURE_SSL_REDIRECT = True
-
-
-
 
 
 ROOT_URLCONF = 'LibraryProject.urls'
