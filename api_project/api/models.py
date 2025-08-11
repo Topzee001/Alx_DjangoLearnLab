@@ -6,3 +6,4 @@ class Book(models.Model):
     author = models.CharField(max_length=100)
     publication_date = models.DateField()
     
+    # github test
