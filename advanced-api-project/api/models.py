@@ -18,6 +18,7 @@ class Book(models.Model):
     title = models.CharField(max_length=150)
     publication_year = models.IntegerField()
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="books")
+    # created_by = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.title} {self.publication_year}"
