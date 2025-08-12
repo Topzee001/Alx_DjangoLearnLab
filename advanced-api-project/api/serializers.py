@@ -10,6 +10,11 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = "__all__"
 
+    def validate_tite(self, value):
+        if len(value) < 3:
+            raise serializers.validationError("Title must be at least 3 characters")
+        return value
+
     def validate_publication_year(self, data):
         current_year = timezone.now().year
         if data > current_year:
