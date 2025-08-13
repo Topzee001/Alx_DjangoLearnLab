@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .models import (Book)
 from .serializers import (BookSerializer)
@@ -13,10 +13,12 @@ class BookListView(generics.ListAPIView):
     """List all books with optional filter by author or title."""
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['author', 'title']  # Allow filtering by author or title, e.g., /books/?author=John%20Doe
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['author', 'publication_year', 'title']  # Allow filtering by author or title, e.g., /books/?author=John%20Doe
+    search_fields = ['author', 'title']
+    order_fields = ['title', 'author']
 
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class BookDetailView(generics.RetrieveAPIView):
@@ -32,7 +34,7 @@ class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         """save the book with current user with created_by """
@@ -53,5 +55,5 @@ class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
