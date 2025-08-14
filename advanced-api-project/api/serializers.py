@@ -3,6 +3,10 @@ from .models import Book, Author
 from django.utils import timezone
 
 class BookSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField(read_only=True)
+    author_id = serializers.PrimaryKeyRelatedField(
+        queryset=Author.objects.all(), write_only=True
+    )
     """
     Serializes Book model fields and validates publication_year.
     """
@@ -10,9 +14,20 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = "__all__"
 
-    def validate_tite(self, value):
+    def create(self, validated_data):
+        author = validated_data.pop('author_id')
+        validated_data['author'] = author
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        if 'author_id' in validated_data:
+            author = validated_data.pop('author_id')
+            validated_data['author'] = author
+        return super().update(instance, validated_data)
+
+    def validate_title(self, value):
         if len(value) < 3:
-            raise serializers.validationError("Title must be at least 3 characters")
+            raise serializers.ValidationError("Title must be at least 3 characters")
         return value
 
     def validate_publication_year(self, data):

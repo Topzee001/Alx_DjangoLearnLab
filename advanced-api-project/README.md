@@ -71,3 +71,13 @@ Ensure DRF token authentication is configured (rest_framework.authtoken in INSTA
 The created_by field links books to the user who created/updated them, set automatically in perform_create and perform_update.
 
 Filtering is enabled for the author field in the list view.
+
+## Book API Test
+- CRUD operations for Book API
+- Filtering by title
+- Searching by author name
+- Ordering by publication_year
+- Permission enforcement for create/update/delete
+
+Run tests:
+python manage.py test api

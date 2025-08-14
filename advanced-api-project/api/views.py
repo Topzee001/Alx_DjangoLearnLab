@@ -16,10 +16,12 @@ class BookListView(generics.ListAPIView):
     serializer_class = BookSerializer
     filter_backends = [rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['author', 'publication_year', 'title']  # Allow filtering by author or title, e.g., /books/?author=John%20Doe
-    search_fields = ['author', 'title']
-    order_fields = ['title', 'author']
+    search_fields = ['author__name', 'title']
+    ordering_fields = ['title', 'author']
 
-    # permission_classes = [IsAuthenticatedOrReadOnly]
+    # TODO: sort the icontains filter for search
+
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class BookDetailView(generics.RetrieveAPIView):
@@ -35,7 +37,7 @@ class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         """save the book with current user with created_by """
@@ -56,5 +58,5 @@ class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
