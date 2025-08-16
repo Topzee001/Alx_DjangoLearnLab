@@ -17,7 +17,7 @@ def signup_view(request):
             return redirect('login')
     else:
         form = CustomUserCreationForm()
-        return render(request, 'blog/signup.html', {'form': form})
+        return render(request, 'blog/register.html', {'form': form})
     
 # using class based view sample
 # class RegisterView(CreateView):
