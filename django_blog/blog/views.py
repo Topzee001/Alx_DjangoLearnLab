@@ -5,7 +5,15 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from .models import Profile
+from .models import Profile, Post
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from .form import PostForm
+from django.views.generic import (ListView,
+                                  CreateView,
+                                  DetailView,
+                                  UpdateView,
+                                  DeleteView
+                                  )
 
 # Create your views here.
 def register_view(request):
@@ -77,3 +85,66 @@ def profile_update_view(request):
 def profile_view(request):
     profile, created = Profile.objects.get_or_create(user=request.user)
     return render(request, 'blog/profile.html', {'user': request.user, 'profile': profile})
+
+
+# List all posts (accessible to everyone)
+class ListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    context_object_name = 'post'
+    ordering = ['-published_date']
+    # can also use 
+    # queryset = Post.objects.order_by('-published_date')
+    # Using get_queryset to add logic to the queryset selection 
+    def get_queryset(self):
+        return super().get_queryset().filter() # For now, this has no filter, I can add filters later (e.g., filter published posts)
+
+# View a single post (accessible to everyone)
+class DetailView(DetailView):
+    model = Post
+    template_name = 'blog/post_detail.html'
+    context_object_name = 'post'
+
+# only logged in users
+class CreateView(CreateView, LoginRequiredMixin):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post_form.html'
+    success_url = reverse_lazy('post-list')
+
+    # Automatically set the author to the current user
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    
+# only logged in users can have access
+class PostUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post_form.html' #reuse same form as post
+    success_url = reverse_lazy('post-list')
+
+    # Automatically set the author to the current user (optional)
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    
+    # Test if the current user is the author
+    def test_func(self):
+        post = self.get_object() # Get the post being updated
+        return self.request.user == post.author # True if user is author, else 403 Forbidden
+    
+# only authenticated users can delete
+class DeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+    model = Post
+    template_name = 'blog/post_confirm_delete.html' # delete confirmation template
+    success_url = reverse_lazy('post-list')
+
+    # test if the current user is the author
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
+
+
+
+
