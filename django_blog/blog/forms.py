@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.forms import EmailField, CharField
 from django.utils.translation import gettext_lazy as _
 from django.db import models
+from django.core.exceptions import ValidationError
 from django import forms
 from .models import Profile
 
@@ -14,6 +15,12 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username","first_name", "last_name", "email", "password1", "password2")
+    
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if User.objects.filter(email=email).exists():
+            raise ValidationError(_("This email address is already in use. Please use a different email."))
+        return email
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
@@ -29,6 +36,13 @@ class ProfileUpdateForm(UserChangeForm):
     class Meta:
         model = User
         fields = ("username", "email", "first_name", "last_name")
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        # Check if email is taken by another user (exclude current user)
+        if User.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
+            raise ValidationError(_("This email address is already in use. Please use a different email."))
+        return email
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -8,16 +8,20 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile
 
 # Create your views here.
-def signup_view(request):
+def register_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             Profile.objects.create(user=user) # Create empty Profile for the new user
             return redirect('login')
+        # else:
+        #     print("Form errors:", form.errors)
+        #     # Render the form again with errors
+        #     return render(request, 'blog/register.html', {'form': form})
     else:
         form = CustomUserCreationForm()
-        return render(request, 'blog/register.html', {'form': form})
+    return render(request, 'blog/register.html', {'form': form})
     
 # using class based view sample
 # class RegisterView(CreateView):
@@ -71,4 +75,5 @@ def profile_update_view(request):
 # blog/views.py (add this for a basic profile view)
 @login_required
 def profile_view(request):
-    return render(request, 'blog/profile.html', {'user': request.user})
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    return render(request, 'blog/profile.html', {'user': request.user, 'profile': profile})
