@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.core.exceptions import ValidationError
 from django import forms
-from .models import Profile
+from .models import Profile, Post
 
 class CustomUserCreationForm(UserCreationForm):
     email = EmailField(label=_("Email address"), required=True, help_text=_("Required."))
@@ -53,3 +53,27 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ("bio", "profile_picture")
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ("title", "content") # fields available for aditing in the form, other fields in the model are auto generated
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}), # Add CSS class for styling
+            'content': forms.Textarea(attrs={'class': 'form-control', 'rows':6}) # Textarea for content
+        }
+        labels = {
+            'title':_('Title'),
+            'content':_('Content'),
+        }
+        help_texts = {
+            'title': _('Enter a catchy title for your post.'),
+            'content': _('Write your Blog post here'),
+        }
+    # custom validation (e.g., ensure title isn't empty, though Meta required handles it (optional)
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if not title:
+            raise forms.ValidationError(_('Title cannot be empty'))
+        return title
+    

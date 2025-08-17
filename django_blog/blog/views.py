@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .models import Profile, Post
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .form import PostForm
+from .forms import PostForm
 from django.views.generic import (ListView,
                                   CreateView,
                                   DetailView,
@@ -88,7 +88,7 @@ def profile_view(request):
 
 
 # List all posts (accessible to everyone)
-class ListView(ListView):
+class BlogPostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
     context_object_name = 'post'
@@ -100,13 +100,13 @@ class ListView(ListView):
         return super().get_queryset().filter() # For now, this has no filter, I can add filters later (e.g., filter published posts)
 
 # View a single post (accessible to everyone)
-class DetailView(DetailView):
+class BlogPostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
 
 # only logged in users
-class CreateView(CreateView, LoginRequiredMixin):
+class BlogPostCreateView(CreateView, LoginRequiredMixin):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
@@ -118,7 +118,7 @@ class CreateView(CreateView, LoginRequiredMixin):
         return super().form_valid(form)
     
 # only logged in users can have access
-class PostUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+class BlogPostUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html' #reuse same form as post
@@ -135,7 +135,7 @@ class PostUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
         return self.request.user == post.author # True if user is author, else 403 Forbidden
     
 # only authenticated users can delete
-class DeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+class BlogPostDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
     model = Post
     template_name = 'blog/post_confirm_delete.html' # delete confirmation template
     success_url = reverse_lazy('post-list')
@@ -144,7 +144,4 @@ class DeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
-
-
-
 
