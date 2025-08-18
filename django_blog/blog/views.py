@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Post
+from .models import Profile, Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import PostForm
 from django.views.generic import (ListView,
@@ -91,7 +91,7 @@ def profile_view(request):
 class BlogPostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
-    context_object_name = 'post'
+    context_object_name = 'posts'
     ordering = ['-published_date']
     # can also use 
     # queryset = Post.objects.order_by('-published_date')
@@ -105,11 +105,21 @@ class BlogPostDetailView(DetailView):
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add comments to the context, ordered by creation date (newest first)
+        comments = self.get_object.comments.all().order_by('-created_at')
+        print(f"Comments for post {self.object.title}: {comments}")
+        context['comments'] = comments
+        return context
+
+
+        return 
 # only logged in users
 class BlogPostCreateView(CreateView, LoginRequiredMixin):
     model = Post
     form_class = PostForm
-    template_name = 'blog/post_form.html'
+    template_name = 'blog/post_create.html'
     success_url = reverse_lazy('post-list')
 
     # Automatically set the author to the current user
@@ -117,11 +127,14 @@ class BlogPostCreateView(CreateView, LoginRequiredMixin):
         form.instance.author = self.request.user
         return super().form_valid(form)
     
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+    
 # only logged in users can have access
 class BlogPostUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
     model = Post
     form_class = PostForm
-    template_name = 'blog/post_form.html' #reuse same form as post
+    template_name = 'blog/post_create.html' #reuse same form as post
     success_url = reverse_lazy('post-list')
 
     # Automatically set the author to the current user (optional)
@@ -145,3 +158,22 @@ class BlogPostDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
         post = self.get_object()
         return self.request.user == post.author
 
+# class BlogCommentsListView(ListView):
+#     model = Comment
+#     # template_name = 
+#     # success_url =
+
+# class BlogCommentPostView(CreateView, LoginRequiredMixin):
+#     model = Comment
+#     # template_name = 
+#     # success_url =
+
+# class BlogCommentEditView(UpdateView, LoginRequiredMixin):
+#     model = Comment
+#     # template_name =
+#     # success_url = 
+
+# class BlogCommentDeleteView(DeleteView, LoginRequiredMixin):
+#     model = Comment
+#     # template_name =  
+#     # success_url =

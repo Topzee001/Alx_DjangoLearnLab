@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.core.exceptions import ValidationError
 from django import forms
-from .models import Profile, Post
+from .models import Profile, Post, Comment
 
 class CustomUserCreationForm(UserCreationForm):
     email = EmailField(label=_("Email address"), required=True, help_text=_("Required."))
@@ -77,3 +77,19 @@ class PostForm(forms.ModelForm):
             raise forms.ValidationError(_('Title cannot be empty'))
         return title
     
+    
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Write your comment here...'}),
+        }
+        labels = {'content': _('Comment')}
+        help_texts = {'content': _('Share your thoughts on this post.')}
+
+    def clean_content(self):
+        content = self.cleaned_data.get('content')
+        if len(content.strip()) < 5:
+            raise forms.ValidationError(_("comment must be at least 5 characters long"))
+        return content
