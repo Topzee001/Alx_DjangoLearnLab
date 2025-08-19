@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>{% if object %}Edit Post{% else %}Create New Post{% endif %}</h2>
+<h2>{% if form.instance.pk %}Edit Post{% else %}Create New Post{% endif %}</h2>
 {% if form.errors %}
     <p style="color: red;">Please correct the errors below:</p>
     <ul>
@@ -10,9 +10,6 @@
             {% for error in field.errors %}
                 <li>{{ field.label }}: {{ error }}</li>
             {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
-            <li>{{ error }}</li>
         {% endfor %}
     </ul>
 {% endif %}
