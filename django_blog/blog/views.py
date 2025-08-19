@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .models import Profile, Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 from django.views.generic import (ListView,
                                   CreateView,
                                   DetailView,
@@ -108,14 +108,20 @@ class BlogPostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Add comments to the context, ordered by creation date (newest first)
-        comments = self.get_object.comments.all().order_by('-created_at')
+        # can also be
+        # comments = self.get_object().comments.all().order_by('-created_at')
+        # but not
+        # comments = self.get_object.comments.all().order_by('-created_at')
+        comments = self.object.comments.all().order_by('-created_at')
         print(f"Comments for post {self.object.title}: {comments}")
         context['comments'] = comments
+        context['comment_form'] = CommentForm()
         return context
 
 
         return 
 # only logged in users
+        # comments = self.get_object().comments.all().order_by('-created_at')
 class BlogPostCreateView(CreateView, LoginRequiredMixin):
     model = Post
     form_class = PostForm
@@ -163,17 +169,42 @@ class BlogPostDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
 #     # template_name = 
 #     # success_url =
 
-# class BlogCommentPostView(CreateView, LoginRequiredMixin):
-#     model = Comment
-#     # template_name = 
-#     # success_url =
+class BlogCommentCreateView(CreateView, LoginRequiredMixin):
+    model = Comment
+    template_name = 'blog/post_detail.html'
+    form_class = CommentForm
 
-# class BlogCommentEditView(UpdateView, LoginRequiredMixin):
-#     model = Comment
-#     # template_name =
-#     # success_url = 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = Post.objects.get(pk=self.kwargs['pk'])  # Set post from URL pk
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy('post-detail', kwargs={'pk': self.kwargs['pk']})  # Redirect to post detail
 
-# class BlogCommentDeleteView(DeleteView, LoginRequiredMixin):
-#     model = Comment
-#     # template_name =  
-#     # success_url =
+
+
+class BlogCommentUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+    model = Comment
+    template_name = 'blog/comment_form.html'
+    form_class = CommentForm
+
+    def get_success_url(self):
+        return reverse_lazy('post-detail', kwargs={'pk': self.object.post.pk})
+    
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
+
+class BlogCommentDeleteView(DeleteView, LoginRequiredMixin):
+    model = Comment
+    template_name =  'blog/comment_confirm_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy('post-detail', kwargs={'pk': self.object.pk} )
+    
+    def test_func(self):
+        comment = self.get.object()
+        return self.request.user == comment.author
+
+    # success_url =
