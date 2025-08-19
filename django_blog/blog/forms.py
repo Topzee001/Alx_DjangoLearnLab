@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django import forms
 from .models import Profile, Post, Comment
 from taggit.forms import TagField # Import TagField for django-taggit
+from taggit_autosuggest.widgets import TagAutoSuggest
 
 class CustomUserCreationForm(UserCreationForm):
     email = EmailField(label=_("Email address"), required=True, help_text=_("Required."))
@@ -56,7 +57,9 @@ class ProfileForm(forms.ModelForm):
         fields = ("bio", "profile_picture")
 
 class PostForm(forms.ModelForm):
-    tags = TagField(required=False, help_text=_('Enter tags separated by commas (e.g., Django, Python).'))
+    tags = TagField(required=False, help_text=_('Enter tags separated by commas (e.g., Django, Python).'), 
+                    widget=TagAutoSuggest('taggit')
+                    )
     # TagField for comma-seperated tag input
     class Meta:
         model = Post
