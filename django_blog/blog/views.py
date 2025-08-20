@@ -231,4 +231,18 @@ class SearchView(ListView):
         context['query'] = self.request.GET.get('q', '') # Pass query to template for display
         print(f"Search query? {context['query']}, Results: {context['posts'].count()}") # Debug print
         return context
-        
+    
+class TagView(ListView):
+    model = Post
+    template_name = 'blog/tag_posts.html'
+    context_object_name = 'posts'
+    ordering = ['-published_date'] #can be in a list bracket
+
+    def get_queryset(self):
+        tag_name = self.kwargs['tag_name'] # get tagname from url
+        return Post.objects.filter(tags__name=tag_name) # filters posts by exact tag name
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag_name'] = self.kwargs['tag_name'] #pass tag to template
+        return context

@@ -23,7 +23,7 @@
         <strong>Tags:</strong>
         {% if post.tags.all %}
         {% for tag in post.tags.all %}
-        {{ tag.name }}{% if not forloop.last %}, {% endif %}
+        <a href="{% url 'tag-posts' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
         {% endfor %}
         {% else %}
         No tags.
