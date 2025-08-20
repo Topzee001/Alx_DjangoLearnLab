@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile, Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import PostForm, CommentForm
+from django.db.models import Q
 from django.views.generic import (ListView,
                                   CreateView,
                                   DetailView,
@@ -207,4 +208,27 @@ class BlogCommentDeleteView(DeleteView, LoginRequiredMixin):
         comment = self.get.object()
         return self.request.user == comment.author
 
-    # success_url =
+class SearchView(ListView):
+    model = Post
+    template_name = 'blog/search_results/html'
+    context_object_name = 'posts'
+    ordering = '-published_date'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q', '')
+        if query:
+            # filter post where title, content, or tags match query (case-insensitive)
+            return Post.objects.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) |
+                Q(tags__name__in=[query])
+            ).distinct() # distinct avoid duplicate posts
+        return Post.objects.all() # returns all posts if no query
+        #returns filtered posts orr all posts if query is empty
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q', '') # Pass query to template for display
+        print(f"Search query? {context['query']}, Results: {context['posts'].count()}") # Debug print
+        return context
+        

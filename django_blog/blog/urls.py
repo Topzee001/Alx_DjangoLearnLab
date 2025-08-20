@@ -4,7 +4,8 @@ from .views import register_view, profile_view, profile_update_view
 from .views import ( BlogPostListView, BlogPostCreateView,
                     BlogPostDeleteView, BlogPostDetailView,
                     BlogPostUpdateView, BlogCommentCreateView,
-                    BlogCommentUpdateView, BlogCommentDeleteView)
+                    BlogCommentUpdateView, BlogCommentDeleteView
+                    , SearchView,)
 
 urlpatterns = [
     path('login/', LoginView.as_view(template_name='blog/login.html'), name='login'),
@@ -22,4 +23,5 @@ urlpatterns = [
     # /posts/int:post_id/comments/new/
     path('comment/<int:pk>/update/', BlogCommentUpdateView.as_view(), name='comment-update'),
     path('comment/<int:pk>/delete/', BlogCommentDeleteView.as_view(), name='comment-delete'),
+    path('search/', SearchView.as_view(), name='search'),
 ]

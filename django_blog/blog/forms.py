@@ -6,8 +6,8 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django import forms
 from .models import Profile, Post, Comment
-from taggit.forms import TagField # Import TagField for django-taggit
-from taggit_autosuggest.widgets import TagWidget
+from taggit.forms import TagField, TagWidget # Import TagField for django-taggit
+# from taggit_autosuggest.widgets import TagAutoSuggest
 
 class CustomUserCreationForm(UserCreationForm):
     email = EmailField(label=_("Email address"), required=True, help_text=_("Required."))
