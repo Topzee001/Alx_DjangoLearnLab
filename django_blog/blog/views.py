@@ -221,7 +221,7 @@ class SearchView(ListView):
             return Post.objects.filter(
                 Q(title__icontains=query) |
                 Q(content__icontains=query) |
-                Q(tags__name__in=[query])
+                Q(tags__name__icontains=query)
             ).distinct() # distinct avoid duplicate posts
         return Post.objects.all() # returns all posts if no query
         #returns filtered posts orr all posts if query is empty
