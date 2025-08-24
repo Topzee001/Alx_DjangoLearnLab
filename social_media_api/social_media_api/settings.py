@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework.authtoken',
     'accounts',
+    'posts',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -53,6 +54,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,  # paginate 5 per page
 }
 
 MIDDLEWARE = [
