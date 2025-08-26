@@ -4,7 +4,7 @@ from .serializers import PostSerializer, CommentSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, SAFE_METHODS, BasePermission, IsAuthenticatedOrReadOnly
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import Post, Like
@@ -63,7 +63,7 @@ class FeedView(generics.ListAPIView):
 
 
 class LikePostView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = LikeSerializer
 
     def post(self, request, pk):
@@ -86,7 +86,7 @@ class LikePostView(generics.GenericAPIView):
 
 
 class UnlikePostView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
