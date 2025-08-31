@@ -58,6 +58,7 @@ if not DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -68,9 +69,8 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework.authtoken',
     'corsheaders', # for handling CORS
-    'accounts',
-    'posts',
-    'notifications',
+    'posts.apps.PostsConfig',
+    'notifications.apps.NotificationsConfig',
     # 'storages', # for handling static files in prod
 ]
 
@@ -135,7 +135,7 @@ else:
     # Use PostgreSQL in production (Render provides DATABASE_URL)
     DATABASES = {
         'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
+            default=os.environ.get('DATABASE_URL', 'postgres://postgres:pass@localhost:5432/social_media_api'),
             conn_max_age=600,
             conn_health_checks=True,
         )
@@ -209,7 +209,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000"
     # the frontend domain will be added here when deployed, i wonder for mobile tho
-]
+] if not DEBUG else []
 
 CORS_ALLOW_CREDENTIALS = True
 
