@@ -9,9 +9,10 @@ services:
     plan: free
     name: social_media_api
     runtime: python
-    buildCommand: 'cd social_media_api && ./build.sh'
+    # buildCommand: 'cd social_media_api && ./build.sh'
+    buildCommand: 'cd social_media_api && chmod +x build.sh && ./build.sh'
     # startCommand: 'cd social_media_api && python -m gunicorn social_media_api.asgi:application -k uvicorn.workers.UvicornWorker'
-    startCommand: 'cd social_media_api && python -m gunicorn social_media_api.wsgi:application --bind 0.0.0.0:$PORT'
+    startCommand: 'cd social_media_api && python -m gunicorn social_media_api.wsgi:application'
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -22,10 +23,9 @@ services:
       - key: WEB_CONCURRENCY
         value: 4
       - key: ALLOWED_HOSTS
-        value: "social_media_api.onrender.com"
-      
-      # - key: DEBUG
-      #   value: "False"
+        value: ".onrender.com"
+      - key: DEBUG
+        value: "False"
       # - key: ALLOWED_HOSTS
       #   value: ".onrender.com"
       # - key: PYTHON_VERSION

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -o errexit
 
-cd social_media_api
+# cd social_media_api
 
 pip install -r requirements.txt
 
