@@ -30,8 +30,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key-for-dev-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-DEBUG = False
-# DEBUG = os.environ.get('DEBUG', 'True') == 'True'  # Default to True for local
+# DEBUG = False
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'  # Default to True for local
 
 
 # ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
