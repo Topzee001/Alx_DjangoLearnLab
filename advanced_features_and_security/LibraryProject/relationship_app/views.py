@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import permission_required
 from .forms import CustomUserCreationForm, BookForm
 
 
-
 # Create your views here.
 # fxn based view
 def list_books(request):

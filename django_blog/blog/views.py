@@ -232,7 +232,7 @@ class SearchView(ListView):
         print(f"Search query? {context['query']}, Results: {context['posts'].count()}") # Debug print
         return context
     
-class TagView(ListView):
+class PostByTagListView(ListView):
     model = Post
     template_name = 'blog/tag_posts.html'
     context_object_name = 'posts'

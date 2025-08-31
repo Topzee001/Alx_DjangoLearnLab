@@ -5,7 +5,7 @@ from .views import ( BlogPostListView, BlogPostCreateView,
                     BlogPostDeleteView, BlogPostDetailView,
                     BlogPostUpdateView, BlogCommentCreateView,
                     BlogCommentUpdateView, BlogCommentDeleteView
-                    , SearchView, TagView)
+                    , SearchView, PostByTagListView)
 
 urlpatterns = [
     path('login/', LoginView.as_view(template_name='blog/login.html'), name='login'),
@@ -24,5 +24,5 @@ urlpatterns = [
     path('comment/<int:pk>/update/', BlogCommentUpdateView.as_view(), name='comment-update'),
     path('comment/<int:pk>/delete/', BlogCommentDeleteView.as_view(), name='comment-delete'),
     path('search/', SearchView.as_view(), name='search'),
-    path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='tag-posts')
+    path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='tag-posts') # the url can be /<str:tag_name>/ following the context_object_data name in the taglistview
 ]

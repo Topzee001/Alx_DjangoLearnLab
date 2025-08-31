@@ -30,12 +30,30 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key-for-dev-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-# DEBUG = False
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'  # Default to True for local
+DEBUG = False
+# DEBUG = os.environ.get('DEBUG', 'True') == 'True'  # Default to True for local
 
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+# ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
+# if not DEBUG:
+#     ALLOWED_HOSTS.append('.onrender.com')
+# better approach
+# Get the default hosts for local development
+default_hosts = ['127.0.0.1', 'localhost']
+
+# Get additional hosts from environment variable
+env_hosts = os.environ.get('ALLOWED_HOSTS', '').split(',')
+env_hosts = [host.strip() for host in env_hosts if host.strip()]
+
+# Combine both lists
+ALLOWED_HOSTS = default_hosts + env_hosts
+
+# Always include Render's domain in production
+if not DEBUG:
+    ALLOWED_HOSTS.append('.onrender.com')
+    # Remove any empty strings that might have been added
+    ALLOWED_HOSTS = [host for host in ALLOWED_HOSTS if host]
 
 # Application definition
 

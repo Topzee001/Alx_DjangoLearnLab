@@ -15,7 +15,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
 import os
-from csp.constants import SELF
+# from csp.constants import SELF
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-8a#ri3mx_c3(lr33cpu90%$&!kir=wy_7okq!tz&bj+dux+ue$
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Prevents displaying detailed error pages in production
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['yourdomain.com', '127.0.0.1', 'localhost']
 
@@ -45,8 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf.apps.BookshelfConfig',
     'relationship_app.apps.RelationshipAppConfig',
-    'csp',
-
+    # 'csp',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'csp.middleware.CSPMiddleware',
+    # 'csp.middleware.CSPMiddleware',
 ]
 
 
@@ -73,40 +72,40 @@ MIDDLEWARE = [
 # }
 
 # configure CSP headers to reduce the risk of xss
-CONTENT_SECURITY_POLICY = {
-    'DIRECTIVES': {
-        'default-src': ("'self'",),
-        'font-src': ("'self'", 'https://fonts.gstatic.com'),
-        'script-src': ("'self'", 'https://cdnjs.cloudflare.com'),
-        'style-src': ("'self'", 'https://fonts.googleapis.com'),
-    }
-}
+# CONTENT_SECURITY_POLICY = {
+#     'DIRECTIVES': {
+#         'default-src': ("'self'",),
+#         'font-src': ("'self'", 'https://fonts.gstatic.com'),
+#         'script-src': ("'self'", 'https://cdnjs.cloudflare.com'),
+#         'style-src': ("'self'", 'https://fonts.googleapis.com'),
+#     }
+# }
 
 
 # redirect http requests to https
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 
 # HTTPS Strict Transport Security (HSTS)
-SECURE_HSTS_SECONDS = 31536000 # 1 YEAR
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_SECONDS = 31536000 # 1 YEAR
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True
 
 # Browser-side protections
 # Protects against XSS by enabling browser filters
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
+# SECURE_BROWSER_XSS_FILTER = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# X_FRAME_OPTIONS = 'DENY'
 
 # ensure Cookies are sent over HTTPS only(when deployed with HTTPS)
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 
 # prevent the site from being embedded in iframes
 X_FRAME_OPTIONS = 'DENY'
 
 # Update Deployment Configuration
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-HTTP_X_FORWARDED_PROTO = 'https'
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# HTTP_X_FORWARDED_PROTO = 'https'
 # SECURE_SSL_REDIRECT = True
 
 

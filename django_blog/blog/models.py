@@ -8,7 +8,7 @@ class Post(models.Model):
     content = models.TextField()
     published_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, related_name='post', on_delete=models.CASCADE )
-    # defining the ManyToManyField before the model it references by using a string referenc
+    # defining the ManyToManyField before the model it references by using a string reference
     # tags = models.ManyToManyField('Tag', related_name='posts', blank=True)
     # replacing many to many with taggable manager
     tags = TaggableManager(blank=True)
