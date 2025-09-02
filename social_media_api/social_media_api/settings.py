@@ -205,11 +205,15 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000"
-    # the frontend domain will be added here when deployed, i wonder for mobile tho
-] if not DEBUG else []
+if DEBUG:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ]
+else:
+    # You should set this in your production environment as a comma-separated string
+    # e.g., CORS_ALLOWED_ORIGINS=https://your-frontend.com,https://another.com
+    CORS_ALLOWED_ORIGINS = [origin.strip() for origin in os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',') if origin.strip()]
 
 CORS_ALLOW_CREDENTIALS = True
 
