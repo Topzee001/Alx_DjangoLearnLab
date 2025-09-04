@@ -52,5 +52,5 @@ coverage.xml
 *.py,cover
 
 # Migrations (optional if you don’t want to track them early)
-**/migrations/*.py
-**/migrations/*.pyc
+# **/migrations/*.py
+# **/migrations/*.pyc
