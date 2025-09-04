@@ -7,4 +7,8 @@ pip install -r requirements.txt
 
 python manage.py collectstatic --no-input
 
-python manage.py migrate
+# Apply migrations for the accounts app first to create the custom user table
+python manage.py migrate accounts
+
+# Apply all other migrations
+python manage.py migrate --no-input
