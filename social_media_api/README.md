@@ -27,11 +27,11 @@ The API powers core social media features including authentication, posts, comme
 
 ## Project Structure
 
-social_api/  
+social_media_api/  
 │── accounts/ # User authentication, follow/unfollow  
 │── posts/ # Posts, comments, likes, feeds  
 │── notifications/ # User notifications  
-│── social_api/ # Core project settings & routes  
+│── social_media_api/ # Core project settings & routes  
 
 ---
 
