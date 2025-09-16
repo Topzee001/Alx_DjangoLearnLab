@@ -8,7 +8,7 @@ The API powers core social media features including authentication, posts, comme
 
 ---
 
-## 🚀 Features
+## Features
 
 - **User Authentication**
   - Register & login (JWT authentication)
@@ -25,7 +25,7 @@ The API powers core social media features including authentication, posts, comme
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 social_api/  
 │── accounts/ # User authentication, follow/unfollow  
@@ -35,7 +35,7 @@ social_api/
 
 ---
 
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 ```bash:disable-run ```
 # Clone repository
@@ -58,7 +58,7 @@ python manage.py createsuperuser
 # Run server
 python manage.py runserver
 
-## 🔑 Authentication
+## Authentication
 This project uses **JWT Authentication**.  
 After login/registration, you’ll receive a token.  
 Include it in headers for protected endpoints:
@@ -71,7 +71,8 @@ Authorization: Bearer <your_token>
 
 ### Accounts
 - **POST** `/api/accounts/register/` → Register user  
-- **POST** `/api/accounts/login/` → Login & get token  
+- **POST** `/api/accounts/login/` → Login & get token
+- **GET** `/api/accounts/profile/` → Profile
 - **POST** `/api/accounts/follow/<user_id>/` → Follow user  
 - **POST** `/api/accounts/unfollow/<user_id>/` → Unfollow user  
 
@@ -97,7 +98,7 @@ Authorization: Bearer <your_token>
 
 ---
 
-### 📌 Example Response
+### Example Response
 
 ```json
 [
@@ -112,7 +113,7 @@ Authorization: Bearer <your_token>
 ]
 ```
 
-## 🔔 Notifications Model (Simplified)
+## Notifications Model (Simplified)
 
 ```python
 class Notification(models.Model):
@@ -122,10 +123,14 @@ class Notification(models.Model):
     action_object = models.ForeignKey(Post, null=True, blank=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 ```
-🛠️ Tech Stack
+# Tech Stack
 Backend: Django 5, Django REST Framework
+
 Database: PostgreSQL/MySQL
+
 Auth: JWT Authentication
+
 Hosting: Render
-Tools: GitHub Actions (CI/CD), Postman
+
+Tools: Postman
 
