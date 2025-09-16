@@ -4,7 +4,7 @@ A feature-rich **Social Media Backend API** built with **Django** and **Django R
 The API powers core social media features including authentication, posts, comments, follows, likes, feeds, and notifications.  
 
 **Live Deployment**: [Social Media API on Render](https://social-media-api-sysh.onrender.com)  
-📂 **Repository**: [GitHub Repo](https://github.com/Topzee001/Alx_DjangoLearnLab/tree/main/social_media_api)
+**Repository**: [GitHub Repo](https://github.com/Topzee001/Alx_DjangoLearnLab/tree/main/social_media_api)
 
 ---
 
