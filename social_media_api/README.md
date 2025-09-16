@@ -39,8 +39,8 @@ social_media_api/
 
 ```bash:disable-run ```
 # Clone repository
-git clone https://github.com/Topzee001/social_media_api.git
-cd social_api
+git clone https://github.com/Topzee001/Alx_DjangoLearnLab.git
+cd Alx_DjangoLearnLab/social__media_api
 
 # Create virtual environment & install dependencies
 python -m venv venv
